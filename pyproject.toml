@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "langsmith-wrappers"
+version = "0.0.1-rc1"
+description = "Experimental wrappers that also log to LangSmith."
+authors = ["LangChain <support@langchain.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/langchain-ai/langsmith-wrappers"
+
+packages = [
+    {include = "langsmith"}
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+langsmith = "~0.0.24"
+[tool.poetry.group.dev.dependencies]
+black = "^23.7.0"
+mypy = "^1.5.1"
+ruff = "^0.0.285"
+pytest-asyncio = "^0.21.1"
+
