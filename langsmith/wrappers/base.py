@@ -17,7 +17,9 @@ def _get_module_path(module_class: type) -> str:
     :rtype: str
     """
     return (
-        getattr(module_class, "__module__", "") + "." + module_class.__name__
+        getattr(module_class, "__module__", "")
+        + "."
+        + getattr(module_class, "__name__", "")
     ).strip(".")
 
 
@@ -59,7 +61,14 @@ class ModuleWrapper:
             "_run_type",
         )
         wrapped_func = traceable(run_type=run_type, name=run_name)(function_object)
-        return wrapped_func(*args, **kwargs)
+        result = wrapped_func(*args, **kwargs)
+        # If they share a common root domain
+        this_root = _get_module_path(self._lc_module).split(".")[0]
+        if _get_module_path(result).split(".")[0] == this_root:
+            return self.__class__(
+                result, llm_paths=object.__getattribute__(self, "_lc_llm_paths")
+            )
+        return result
 
     def __repr__(self) -> str:
         return repr(object.__getattribute__(self, "_lc_module"))
